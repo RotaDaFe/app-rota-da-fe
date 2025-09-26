@@ -3,7 +3,7 @@
   <img src="/images/logo.png" width="170" alt="Rota da Fé">
 </p>
 
-<h1 align="center">Rota da Fé - Projeto Círio 2024</h1>
+<h1 align="center">Rota da Fé - Projeto Círio 2025</h1>
 
 <p align="center">
   <b>Modernize o cadastro de participantes do Círio com tecnologia, acessibilidade e fé.</b><br>
