@@ -26,6 +26,7 @@ Documentação
 - Caique Costa
 - Paulo Texeira
 - Andrey Marques
+- Davi Lima
 
 """;
 }
