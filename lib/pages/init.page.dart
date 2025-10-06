@@ -1,4 +1,3 @@
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:rota_da_fe/components/alerts.dart';
 import 'package:rota_da_fe/repository/user_repository.dart';
 import 'package:flutter/material.dart';

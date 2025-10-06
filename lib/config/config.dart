@@ -13,30 +13,19 @@ Orientador
 FullStack
 - Marco Antonio da Silva Mesquita
 
+Backend
+- Rafael Góes Duarte
+- Luan Levi Barbosa de Carvalho
+
 Design
 - Alexsandro Fernandes Nascimento
 - Beatriz Silva da Rocha Lisboa
 
-Frontend
-- Matheus Barbosa de Andrade
-- Felipe Santos de Moura 
-- Mateus da Cunha Nunes 
-
-Backend
-- Pedro Gabriel Raiol Frade 
-- Gabriel Henrique Pinheiro Maia 
-- Arthemyo Rodrigues 
-- Paulo Eduardo Melo Pereira 
-
 Documentação
-- salomão trindade moraes  
-- Iago Weycker Viana Oliveira 
-- Melize Rocha
-- Douglas Ronan Mendes de Oliveira
+- Diosne Marlon
+- Caique Costa
+- Paulo Texeira
+- Andrey Marques
 
-Testers
-- Jackeline Pereira Domingues
-- Iago Dantas Zorrilla e Silva 
-- Tales Freire Rodrigues da Costa
 """;
 }
