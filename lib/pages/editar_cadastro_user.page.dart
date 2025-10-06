@@ -23,7 +23,7 @@ class _PageEditeUserState extends State<PageEditeUser> {
   TextEditingController controllerEmail = TextEditingController();
   TextEditingController controllerBloco = TextEditingController();
   TextEditingController controllerSenha = TextEditingController();
-  TextEditingController controllerServidor = TextEditingController(text: 'https://api-rotadafe.netlify.app/');
+  TextEditingController controllerServidor = TextEditingController(text: 'https://api-rtf.nextlab.cloud/');
   TextEditingController dropdownControllerLocalDeAtendimento = TextEditingController();
   TextEditingController dropdownControllerCidade = TextEditingController();
   TextEditingController dropdownControllerSexo = TextEditingController();
@@ -45,7 +45,7 @@ class _PageEditeUserState extends State<PageEditeUser> {
         controllerEmail.text = user['nome'] ?? '';
         controllerBloco.text = user['posto'] ?? '';
         controllerSenha.text = user['senha'] ?? '';
-        controllerServidor.text = user['servidor'] ?? 'https://api-rotadafe.netlify.app/';
+        controllerServidor.text = user['servidor'] ?? 'https://api-rtf.nextlab.cloud/';
       });
     }
   }
@@ -59,7 +59,7 @@ class _PageEditeUserState extends State<PageEditeUser> {
           children: [
             const SizedBox(height: 30),
             const Center(
-                child: Text("CADASTRO",
+                child: Text("Editar Usuario",
                     style: AppTextStyles.head1)),
             const SizedBox(height: 15),
       TextFieldCustom(

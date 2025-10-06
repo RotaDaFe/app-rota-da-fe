@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:rota_da_fe/style/colors.dart';
 import 'package:rota_da_fe/utils/truncate_text.dart';
 
 Widget UserCard(
@@ -38,11 +39,11 @@ Widget UserCard(
             flex: 100,
             child: Container(
               padding: const EdgeInsets.all(2),
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("images/iconAccount.png"),
-                ),
+              decoration: BoxDecoration(
+                color: AppColors.secondary,
+                borderRadius: BorderRadius.circular(20)
               ),
+              child: Center(child: const Icon(Icons.group, size: 80, color: Colors.white)),
             ),
           ),
           const SizedBox(height: 2),

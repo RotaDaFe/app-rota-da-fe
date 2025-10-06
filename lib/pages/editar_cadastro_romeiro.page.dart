@@ -15,12 +15,13 @@ import 'package:rota_da_fe/components/outlinedbuttoncustom.dart';
 import 'package:rota_da_fe/style/textstyles.dart';
 
 class PageEditarCadastroRomeiro extends StatefulWidget {
-  final String uuid;  
+  final String uuid;
 
   const PageEditarCadastroRomeiro({required this.uuid, super.key});
 
   @override
-  State<PageEditarCadastroRomeiro> createState() => _PageEditarCadastroRomeiroState();
+  State<PageEditarCadastroRomeiro> createState() =>
+      _PageEditarCadastroRomeiroState();
 }
 
 class _PageEditarCadastroRomeiroState extends State<PageEditarCadastroRomeiro> {
@@ -31,10 +32,12 @@ class _PageEditarCadastroRomeiroState extends State<PageEditarCadastroRomeiro> {
 
   TextEditingController controllerNome = TextEditingController();
   TextEditingController controllerIdade = TextEditingController();
-  TextEditingController dropdownControllerLocalDeAtendimento = TextEditingController();
+  TextEditingController dropdownControllerLocalDeAtendimento =
+      TextEditingController();
   TextEditingController dropdownControllerCidade = TextEditingController();
   TextEditingController dropdownControllerSexo = TextEditingController();
-  TextEditingController dropdowncontrollerCondicaoFisica = TextEditingController();
+  TextEditingController dropdowncontrollerCondicaoFisica =
+      TextEditingController();
   TextEditingController controllerCondicaoFisica = TextEditingController();
   bool inputPersonalizado = false;
   late final RomeiroRepository romeiroRepository;
@@ -70,7 +73,8 @@ class _PageEditarCadastroRomeiroState extends State<PageEditarCadastroRomeiro> {
       controllerNome.text = romeiroData.nome;
       controllerIdade.text = romeiroData.idade.toString();
       dropdownControllerCidade.text = romeiroData.cidade;
-      dropdownControllerLocalDeAtendimento.text = romeiroData.localDeAtendimento;
+      dropdownControllerLocalDeAtendimento.text =
+          romeiroData.localDeAtendimento;
       dropdownControllerSexo.text = romeiroData.sexo;
       isLoading = false;
     });
@@ -85,7 +89,7 @@ class _PageEditarCadastroRomeiroState extends State<PageEditarCadastroRomeiro> {
       confirmBtnText: 'Sim',
       cancelBtnText: 'Não',
       onConfirmBtnTap: () async {
-  await deleteRomeiro(repository: romeiroRepository, uuid: widget.uuid);
+        await deleteRomeiro(repository: romeiroRepository, uuid: widget.uuid);
         alertSucessDelete(context);
         Navigator.pop(context);
         navigateAndRemoveUntil(context, const PageInicio());
@@ -111,10 +115,15 @@ class _PageEditarCadastroRomeiroState extends State<PageEditarCadastroRomeiro> {
                         const SizedBox(height: 30),
                         const Center(
                           child: Text(
-                            "EDITAR CADASTRO",
-                            style: AppTextStyles.head1, 
+                            "Editar Cadastro de Romeiro",
+                            style: AppTextStyles.head1,
                           ),
                         ),
+                        const Center(
+                            child: Text(
+                                "Atualize seus dados quando necessário.",
+                                style: AppTextStyles.subTitle,
+                                textAlign: TextAlign.center)),
                         const SizedBox(height: 15),
                         TextFieldCustom(
                             keyboardType: TextInputType.name,
@@ -122,9 +131,8 @@ class _PageEditarCadastroRomeiroState extends State<PageEditarCadastroRomeiro> {
                             controller: controllerNome,
                             width: largura),
                         TextFieldCustom(
-                            keyboardType:
-                                const TextInputType.numberWithOptions(
-                                    decimal: false, signed: false),
+                            keyboardType: const TextInputType.numberWithOptions(
+                                decimal: false, signed: false),
                             labelText: "Idade",
                             isNumber: true,
                             controller: controllerIdade,
@@ -144,32 +152,28 @@ class _PageEditarCadastroRomeiroState extends State<PageEditarCadastroRomeiro> {
                             labelText: "Sexo",
                             items: sexo, // Lista de opções
                             controller: dropdownControllerSexo,
-                            initialValue:
-                                dropdownControllerSexo.text.isNotEmpty
-                                    ? dropdownControllerSexo.text
-                                    : "Selecione",
+                            initialValue: dropdownControllerSexo.text.isNotEmpty
+                                ? dropdownControllerSexo.text
+                                : "Selecione",
                             width: largura),
                         DropdownButtonForm(
                             onChanged: () {},
                             labelText: "Local de atendimento",
                             items: locaDeAtendimento, // Lista de opções
-                            controller:
-                                dropdownControllerLocalDeAtendimento,
-                            initialValue:
-                                dropdownControllerLocalDeAtendimento
-                                        .text.isNotEmpty
-                                    ? dropdownControllerLocalDeAtendimento
-                                        .text
-                                    : "Selecione",
+                            controller: dropdownControllerLocalDeAtendimento,
+                            initialValue: dropdownControllerLocalDeAtendimento
+                                    .text.isNotEmpty
+                                ? dropdownControllerLocalDeAtendimento.text
+                                : "Selecione",
                             width: largura),
                         DropdownButtonForm(
                             labelText: "Condição Física",
                             items: patologiasMaisVistas, // Lista de opções
                             controller: dropdowncontrollerCondicaoFisica,
-                            initialValue: dropdowncontrollerCondicaoFisica
-                                    .text.isNotEmpty
-                                ? dropdowncontrollerCondicaoFisica.text
-                                : "Selecione",
+                            initialValue:
+                                dropdowncontrollerCondicaoFisica.text.isNotEmpty
+                                    ? dropdowncontrollerCondicaoFisica.text
+                                    : "Selecione",
                             width: largura,
                             onChanged: () {
                               setState(() {
@@ -191,15 +195,19 @@ class _PageEditarCadastroRomeiroState extends State<PageEditarCadastroRomeiro> {
                             ontap: () async {
                               if (controllerNome.text.isNotEmpty &&
                                   controllerIdade.text.isNotEmpty &&
-                                  dropdownControllerCidade.text != 'Selecione' &&
-                                  dropdownControllerLocalDeAtendimento.text != 'Selecione' &&
+                                  dropdownControllerCidade.text !=
+                                      'Selecione' &&
+                                  dropdownControllerLocalDeAtendimento.text !=
+                                      'Selecione' &&
                                   dropdownControllerSexo.text != 'Selecione' &&
-                                  dropdowncontrollerCondicaoFisica.text != 'Selecione') {
+                                  dropdowncontrollerCondicaoFisica.text !=
+                                      'Selecione') {
                                 // verifica se o input personalizado ta ativado
                                 String patologiaFinal = inputPersonalizado
                                     ? controllerCondicaoFisica.text
                                     : dropdowncontrollerCondicaoFisica.text;
-                                if (inputPersonalizado && controllerCondicaoFisica.text.isEmpty) {
+                                if (inputPersonalizado &&
+                                    controllerCondicaoFisica.text.isEmpty) {
                                   alertFailField(context);
                                 } else {
                                   alertSucess(context);
@@ -208,7 +216,9 @@ class _PageEditarCadastroRomeiroState extends State<PageEditarCadastroRomeiro> {
                                     nome: controllerNome.text,
                                     idade: int.parse(controllerIdade.text),
                                     cidade: dropdownControllerCidade.text,
-                                    localDeAtendimento: dropdownControllerLocalDeAtendimento.text,
+                                    localDeAtendimento:
+                                        dropdownControllerLocalDeAtendimento
+                                            .text,
                                     sexo: dropdownControllerSexo.text,
                                     patologia: patologiaFinal,
                                   );
@@ -218,7 +228,8 @@ class _PageEditarCadastroRomeiroState extends State<PageEditarCadastroRomeiro> {
                                     romeiro: romeiroAtualizado,
                                   );
                                   // ignore: use_build_context_synchronously
-                                  navigateAndRemoveUntil(context, const PageInicio());
+                                  navigateAndRemoveUntil(
+                                      context, const PageInicio());
                                 }
                               } else {
                                 alertFailField(context);

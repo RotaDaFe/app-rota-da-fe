@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rota_da_fe/style/colors.dart';
+import 'package:rota_da_fe/style/textstyles.dart';
 
 Widget DropdownButtonForm({
   required String labelText,
@@ -15,8 +16,9 @@ Widget DropdownButtonForm({
     ...items.where((e) => e != initialValue)
   ];
 
-  return SizedBox(
-    width: width,
+  return Container(
+    margin: const EdgeInsets.symmetric(vertical: 10),
+    width: width-100,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -24,29 +26,13 @@ Widget DropdownButtonForm({
           width: width,
           child: Row(
             children: [
-              Column(
-                children: [
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("",
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold)),
-                  ),
-                  const SizedBox(height: 0),
-                  SizedBox(
-                      width: 50,
-                      child: Image.asset("images/icon_santinha.png")),
-                ],
-              ),
-              const SizedBox(width: 0),
               Expanded(
                 child: Column(
                   children: [
                     Align(
                         alignment: Alignment.centerLeft,
                         child: Text(labelText,
-                            style: const TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold))),
+                            style: AppTextStyles.inputTitle)),
                     const SizedBox(height: 5),
                     DropdownButtonFormField<String>(
                       value: uniqueItems.contains(controller.text)
@@ -55,21 +41,25 @@ Widget DropdownButtonForm({
                       decoration: InputDecoration(
                         fillColor: Colors.white,
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(22),
+                          borderRadius: BorderRadius.circular(9),
                           borderSide: const BorderSide(
                             color: AppColors.secondary,
                           ),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 30, vertical: 14),
+                            horizontal: 30, vertical: 15),
                         border: OutlineInputBorder(
                           borderSide: const BorderSide(
                             color: AppColors.secondary,
                           ),
-                          borderRadius: BorderRadius.circular(22),
+                          borderRadius: BorderRadius.circular(9),
                         ),
                       ),
-                      icon: const Icon(Icons.arrow_downward),
+                      icon: Transform.translate(
+                        offset: const Offset(10, -5),
+                        child: const RotatedBox(
+                            quarterTurns: 1, child: Icon(Icons.arrow_right, size: 35,)),
+                      ),
                       isExpanded: true,
                       onChanged: (String? newValue) {
                         if (newValue != null) {

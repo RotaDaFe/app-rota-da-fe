@@ -1,15 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:rota_da_fe/style/colors.dart';
 
-
 class AppTextStyles {
-
-  // Título principal (ex: CADASTRO, EDITAR CADASTRO, Configuração)
   static const TextStyle head1 = TextStyle(
-    fontSize: 22,
+    fontSize: 28,
     fontWeight: FontWeight.bold,
     color: AppColors.secondary,
+    fontFamily: 'Sofia Sans',
   );
+  static const TextStyle subTitle = TextStyle(
+    fontSize: 15,
+    fontWeight: FontWeight.w500,
+    color: AppColors.subTitle,
+    fontFamily: 'Sofia Sans',
+  );
+  static const TextStyle navbarTitle = TextStyle(
+    fontSize: 35,
+    color: Color(0xff7E501E),
+    fontWeight: FontWeight.bold,
+    fontFamily: 'Sofia Sans Extra Condesed',
+  );
+  static const TextStyle inputTitle =
+      TextStyle(fontSize: 15, fontWeight: FontWeight.bold,fontFamily: 'Sofia Sans');
 
   // // Título de seção (ex: Romeiros cadastrados)
   // static const TextStyle head2 = TextStyle(

@@ -26,7 +26,7 @@ Future<void> updateUser({
   required nome,
   required posto,
   required senha,
-  String servidor = 'https://api-rotadafe.netlify.app/',
+  String servidor = 'https://api-rtf.nextlab.cloud/',
 }) async {
   UserModel user = UserModel(
     nome: nome,

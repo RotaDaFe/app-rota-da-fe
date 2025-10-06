@@ -1,3 +1,4 @@
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:rota_da_fe/components/alerts.dart';
 import 'package:rota_da_fe/repository/user_repository.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class _PageInitState extends State<PageInit> {
   final RegExp emailRegex = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}");
   bool skipConfigServidor = false;
   TextEditingController controllerServidor =
-      TextEditingController(text: 'https://api-rotadafe.netlify.app/');
+      TextEditingController(text: 'https://api-rtf.nextlab.cloud/');
   @override
   Widget build(BuildContext context) {
     double largura = MediaQuery.of(context).size.width;
@@ -49,9 +50,18 @@ class _PageInitState extends State<PageInit> {
                 const SizedBox(height: 30),
                 const Center(
                     child: Text(
-                  "CADASTRO",
+                  "Cadastro inicial",
                   style: AppTextStyles.head1,
                 )),
+                const Center(
+                    child: Text("✨ Bem-vindo ao sistema Rota da Fé!",
+                        style: AppTextStyles.subTitle,
+                        textAlign: TextAlign.center)),
+                const SizedBox(height: 15),
+                Container(height: 200,width: largura-100,decoration: BoxDecoration(
+                  image: const DecorationImage(fit: BoxFit.fitWidth,image: AssetImage('images/init/background.png')),
+                  borderRadius: BorderRadius.circular(10),
+                ),),
                 const SizedBox(height: 15),
                 TextFieldCustom(
                     keyboardType: TextInputType.emailAddress,
@@ -78,11 +88,11 @@ class _PageInitState extends State<PageInit> {
                   ],
                 ),
                 if (skipConfigServidor)
-                TextFieldCustom(
-                    keyboardType: TextInputType.url,
-                    labelText: "Servidor (URL base)",
-                    controller: controllerServidor,
-                    width: largura),
+                  TextFieldCustom(
+                      keyboardType: TextInputType.url,
+                      labelText: "Servidor (URL base)",
+                      controller: controllerServidor,
+                      width: largura),
                 if (skipConfigServidor)
                   TextFieldCustom(
                       obscureText: true,
@@ -95,7 +105,7 @@ class _PageInitState extends State<PageInit> {
                     text: "Iniciar app",
                     ontap: () async {
                       if (controllerEmail.text.isNotEmpty &&
-                          controllerBloco.text.isNotEmpty ) {
+                          controllerBloco.text.isNotEmpty) {
                         if (!emailRegex.hasMatch(controllerEmail.text)) {
                           alertFailField(context, msg: 'E-mail inválido!');
                           return;
@@ -105,8 +115,11 @@ class _PageInitState extends State<PageInit> {
                           repository: UserRepository(dbHelper),
                           nome: controllerEmail.text,
                           posto: controllerBloco.text,
-                          senha: !skipConfigServidor ? '' : controllerSenha.text,
-                          servidor: !skipConfigServidor ? '' : controllerServidor.text,
+                          senha:
+                              !skipConfigServidor ? '' : controllerSenha.text,
+                          servidor: !skipConfigServidor
+                              ? ''
+                              : controllerServidor.text,
                         );
                         print('Usuário adicionado, navegando para PageInicio');
                         navigateAndRemoveUntil(context, const PageInicio());

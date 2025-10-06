@@ -61,8 +61,11 @@ class _PageCadastroRomeiroState extends State<PageCadastroRomeiro> {
               child: Column(children: [
                 const SizedBox(height: 30),
                 const Center(
-                    child: Text("CADASTRO",
+                    child: Text("Cadastro de Romeiro",
                         style: AppTextStyles.head1)),
+                const Center(
+                    child: Text("Preencha os dados para participar do Círio",
+                        style: AppTextStyles.subTitle,textAlign: TextAlign.center)),
                 const SizedBox(height: 15),
                 TextFieldCustom(
                     keyboardType: TextInputType.name,
@@ -97,7 +100,6 @@ class _PageCadastroRomeiroState extends State<PageCadastroRomeiro> {
                     controller: dropdownControllerLocalDeAtendimento,
                     initialValue: "Selecione",
                     width: largura),
-              
                 DropdownButtonForm(
                     labelText: "Condição Física",
                     items: patologiaMaisVistas,
@@ -107,8 +109,7 @@ class _PageCadastroRomeiroState extends State<PageCadastroRomeiro> {
                     onChanged: () {
                       setState(() {
                         inputPersonalizado =
-                            dropdowncontrollerCondicaoFisica.text ==
-                                "Outros";
+                            dropdowncontrollerCondicaoFisica.text == "Outros";
                       });
                     }),
                 inputPersonalizado
@@ -131,8 +132,7 @@ class _PageCadastroRomeiroState extends State<PageCadastroRomeiro> {
                           dropdownControllerSexo.text != 'Selecione' &&
                           dropdowncontrollerCondicaoFisica.text !=
                               'Selecione' &&
-                          dropdowncontrollerCondicaoFisica
-                              .text.isNotEmpty &&
+                          dropdowncontrollerCondicaoFisica.text.isNotEmpty &&
                           dropdownControllerLocalDeAtendimento
                               .text.isNotEmpty &&
                           dropdownControllerSexo.text.isNotEmpty) {
@@ -154,16 +154,18 @@ class _PageCadastroRomeiroState extends State<PageCadastroRomeiro> {
                               nome: controllerNome.text,
                               idade: int.tryParse(controllerIdade.text) ?? 0,
                               cidade: dropdownControllerCidade.text,
-                              localDeAtendimento: dropdownControllerLocalDeAtendimento.text,
+                              localDeAtendimento:
+                                  dropdownControllerLocalDeAtendimento.text,
                               sexo: dropdownControllerSexo.text,
                               patologia: controllerCondicaoFisica.text,
                               createdAt: DateTime.now().toIso8601String(),
                               updatedAt: DateTime.now().toIso8601String(),
                             );
-                            await addRomeiro(repository: romeiroRepository, romeiro: romeiro);
+                            await addRomeiro(
+                                repository: romeiroRepository,
+                                romeiro: romeiro);
                             // ignore: use_build_context_synchronously
-                            navigateAndRemoveUntil(
-                                context, const PageInicio());
+                            navigateAndRemoveUntil(context, const PageInicio());
                           }
                         } else {
                           // caso o  input personalizado esteja desativado
@@ -175,16 +177,17 @@ class _PageCadastroRomeiroState extends State<PageCadastroRomeiro> {
                             nome: controllerNome.text,
                             idade: int.tryParse(controllerIdade.text) ?? 0,
                             cidade: dropdownControllerCidade.text,
-                            localDeAtendimento: dropdownControllerLocalDeAtendimento.text,
+                            localDeAtendimento:
+                                dropdownControllerLocalDeAtendimento.text,
                             sexo: dropdownControllerSexo.text,
                             patologia: dropdowncontrollerCondicaoFisica.text,
                             createdAt: DateTime.now().toIso8601String(),
                             updatedAt: DateTime.now().toIso8601String(),
                           );
-                          await addRomeiro(repository: romeiroRepository, romeiro: romeiro);
+                          await addRomeiro(
+                              repository: romeiroRepository, romeiro: romeiro);
                           // ignore: use_build_context_synchronously
-                          navigateAndRemoveUntil(
-                              context, const PageInicio());
+                          navigateAndRemoveUntil(context, const PageInicio());
                         }
                       } else {
                         alertFailField(context);

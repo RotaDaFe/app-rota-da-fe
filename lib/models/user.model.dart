@@ -18,7 +18,7 @@ class UserModel {
       nome: map['nome'] ?? '',
       posto: map['posto'] ?? '',
       senha: map['senha'] ?? '',
-      servidor: map['servidor'] ?? 'https://api-rotadafe.netlify.app/',
+      servidor: map['servidor'] ?? 'https://api-rtf.nextlab.cloud/',
     );
   }
 

@@ -28,15 +28,15 @@ class ExportService {
         if (box.isNotEmpty) {
           final loginMap = box.getAt(0);
           if (loginMap != null && loginMap is Map && loginMap.containsKey('servidor')) {
-            baseUrl = loginMap['servidor'] ?? 'https://api-rotadafe.netlify.app/';
+            baseUrl = loginMap['servidor'] ?? 'https://api-rtf.nextlab.cloud/';
           } else {
-            baseUrl = 'https://api-rotadafe.netlify.app/';
+            baseUrl = 'https://api-rtf.nextlab.cloud/';
           }
         } else {
-          baseUrl = 'https://api-rotadafe.netlify.app/';
+          baseUrl = 'https://api-rtf.nextlab.cloud/';
         }
       } catch (e) {
-        baseUrl = 'https://api-rotadafe.netlify.app/';
+        baseUrl = 'https://api-rtf.nextlab.cloud/';
       }
     }
     // 1. Coletar todos os UUIDs locais
@@ -172,15 +172,15 @@ class ExportService {
         if (box.isNotEmpty) {
           final loginMap = box.getAt(0);
           if (loginMap != null && loginMap is Map && loginMap.containsKey('servidor')) {
-            baseUrl = loginMap['servidor'] ?? 'https://api-rotadafe.netlify.app/';
+            baseUrl = loginMap['servidor'] ?? 'https://api-rtf.nextlab.cloud/';
           } else {
-            baseUrl = 'https://api-rotadafe.netlify.app/';
+            baseUrl = 'https://api-rtf.nextlab.cloud/';
           }
         } else {
-          baseUrl = 'https://api-rotadafe.netlify.app/';
+          baseUrl = 'https://api-rtf.nextlab.cloud/';
         }
       } catch (e) {
-        baseUrl = 'https://api-rotadafe.netlify.app/';
+        baseUrl = 'https://api-rtf.nextlab.cloud/';
       }
     }
     // 1. Coletar todos os UUIDs locais
@@ -301,7 +301,7 @@ class ExportService {
   }) async {
     final String url = (pessoas.isNotEmpty && pessoas.first.containsKey('servidor'))
       ? pessoas.first['servidor'] + 'api/pessoa/upsert-batch'
-      : 'https://api-rotadafe.netlify.app/api/pessoa/upsert-batch';
+      : 'https://api-rtf.nextlab.cloud/api/pessoa/upsert-batch';
     try {
       final response = await HttpMethodService.post(
         url,

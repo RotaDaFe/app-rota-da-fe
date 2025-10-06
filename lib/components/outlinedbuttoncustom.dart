@@ -4,13 +4,13 @@ import 'package:rota_da_fe/style/colors.dart';
 Widget OutlinedButtonCustom(
     {text = '',
     required Function ontap,
-    Color color = AppColors.secondary}) {
+    Color color = AppColors.buttonColor}) {
   return InkWell(
     onTap: () {
       ontap();
     },
     child: Container(
-      width: 200,
+      width: 300,
       height: 60,
       decoration: BoxDecoration(
           color: color,
