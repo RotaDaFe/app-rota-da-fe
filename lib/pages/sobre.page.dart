@@ -30,8 +30,6 @@ class PageSobreApp extends StatelessWidget {
                         "A fé do Círio de Nazaré nos inspira a aprimorar a experiência dos romeiros. O Rota da Fé une tradição e tecnologia para facilitar a jornada com uma ferramenta simples e eficiente. Nosso compromisso é garantir segurança e respeito à devoção, sempre evoluindo para ser um aliado na espiritualidade e bem-estar dos participantes."),
                 const SizedBox(height: 15),
                 SectionLogoExtensao(),
-                const SizedBox(height: 15),
-                SectionWithTitleAndImage(title: "Equipe", text: configData.equipe),
                 const SizedBox(height: 100),
               ]),
             ),

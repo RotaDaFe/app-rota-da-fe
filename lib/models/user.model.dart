@@ -1,3 +1,5 @@
+import 'package:rota_da_fe/config/api_config.dart';
+
 class UserModel {
   String nome;
   String posto;
@@ -18,17 +20,12 @@ class UserModel {
       nome: map['nome'] ?? '',
       posto: map['posto'] ?? '',
       senha: map['senha'] ?? '',
-      servidor: map['servidor'] ?? 'https://api-rtf.nextlab.cloud/',
+      servidor: ApiConfig.normalizeBaseUrl(map['servidor']),
     );
   }
 
   // Método que converte o objeto User em um Map
   Map<String, String> toMap() {
-    return {
-      'nome': nome,
-      'posto': posto,
-      'senha': senha,
-      'servidor': servidor,
-    };
+    return {'nome': nome, 'posto': posto, 'senha': senha, 'servidor': servidor};
   }
 }

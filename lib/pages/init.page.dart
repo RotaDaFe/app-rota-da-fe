@@ -5,6 +5,7 @@ import 'package:rota_da_fe/components/textfieldcustom.dart';
 import 'package:rota_da_fe/components/outlinedbuttoncustom.dart';
 import 'package:rota_da_fe/layout.dart';
 import 'package:rota_da_fe/config/database_helper.dart';
+import 'package:rota_da_fe/config/api_config.dart';
 import 'package:rota_da_fe/style/animations.dart';
 import 'package:rota_da_fe/pages/inicio.page.dart';
 import 'package:rota_da_fe/services/user_service.dart';
@@ -34,8 +35,9 @@ class _PageInitState extends State<PageInit> {
   String? gender;
   final RegExp emailRegex = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}");
   bool skipConfigServidor = false;
-  TextEditingController controllerServidor =
-      TextEditingController(text: 'https://api-rtf.nextlab.cloud/');
+  TextEditingController controllerServidor = TextEditingController(
+    text: ApiConfig.productionBaseUrl,
+  );
   @override
   Widget build(BuildContext context) {
     double largura = MediaQuery.of(context).size.width;
@@ -45,62 +47,75 @@ class _PageInitState extends State<PageInit> {
         child: Column(
           children: [
             Center(
-              child: Column(children: [
-                const SizedBox(height: 30),
-                const Center(
+              child: Column(
+                children: [
+                  const SizedBox(height: 30),
+                  const Center(
+                    child: Text("Cadastro inicial", style: AppTextStyles.head1),
+                  ),
+                  const Center(
                     child: Text(
-                  "Cadastro inicial",
-                  style: AppTextStyles.head1,
-                )),
-                const Center(
-                    child: Text("✨ Bem-vindo ao sistema Rota da Fé!",
-                        style: AppTextStyles.subTitle,
-                        textAlign: TextAlign.center)),
-                const SizedBox(height: 15),
-                Container(height: 200,width: largura-100,decoration: BoxDecoration(
-                  image: const DecorationImage(fit: BoxFit.fitWidth,image: AssetImage('images/init/background.png')),
-                  borderRadius: BorderRadius.circular(10),
-                ),),
-                const SizedBox(height: 15),
-                TextFieldCustom(
+                      "✨ Bem-vindo ao sistema Rota da Fé!",
+                      style: AppTextStyles.subTitle,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  Container(
+                    height: 200,
+                    width: largura - 100,
+                    decoration: BoxDecoration(
+                      image: const DecorationImage(
+                        fit: BoxFit.fitWidth,
+                        image: AssetImage('images/init/background.png'),
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  TextFieldCustom(
                     keyboardType: TextInputType.emailAddress,
                     labelText: "Email",
                     controller: controllerEmail,
-                    width: largura),
-                TextFieldCustom(
+                    width: largura,
+                  ),
+                  TextFieldCustom(
                     keyboardType: TextInputType.text,
                     labelText: "Bloco",
                     controller: controllerBloco,
-                    width: largura),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: skipConfigServidor,
-                      onChanged: (val) {
-                        setState(() {
-                          skipConfigServidor = val ?? false;
-                          if (skipConfigServidor) controllerSenha.clear();
-                        });
-                      },
-                    ),
-                    const Text("Informar configurações de acesso"),
-                  ],
-                ),
-                if (skipConfigServidor)
-                  TextFieldCustom(
+                    width: largura,
+                  ),
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: skipConfigServidor,
+                        onChanged: (val) {
+                          setState(() {
+                            skipConfigServidor = val ?? false;
+                            if (skipConfigServidor) controllerSenha.clear();
+                          });
+                        },
+                      ),
+                      const Text("Informar configurações de acesso"),
+                    ],
+                  ),
+                  if (skipConfigServidor)
+                    TextFieldCustom(
                       keyboardType: TextInputType.url,
                       labelText: "Servidor (URL base)",
                       controller: controllerServidor,
-                      width: largura),
-                if (skipConfigServidor)
-                  TextFieldCustom(
+                      width: largura,
+                    ),
+                  if (skipConfigServidor)
+                    TextFieldCustom(
                       obscureText: true,
                       keyboardType: TextInputType.text,
                       labelText: "Senha",
                       controller: controllerSenha,
-                      width: largura),
-                const SizedBox(height: 20),
-                OutlinedButtonCustom(
+                      width: largura,
+                    ),
+                  const SizedBox(height: 20),
+                  OutlinedButtonCustom(
                     text: "Iniciar app",
                     ontap: () async {
                       if (controllerEmail.text.isNotEmpty &&
@@ -114,10 +129,11 @@ class _PageInitState extends State<PageInit> {
                           repository: UserRepository(dbHelper),
                           nome: controllerEmail.text,
                           posto: controllerBloco.text,
-                          senha:
-                              !skipConfigServidor ? '' : controllerSenha.text,
-                          servidor: !skipConfigServidor
+                          senha: !skipConfigServidor
                               ? ''
+                              : controllerSenha.text,
+                          servidor: !skipConfigServidor
+                              ? ApiConfig.productionBaseUrl
                               : controllerServidor.text,
                         );
                         print('Usuário adicionado, navegando para PageInicio');
@@ -125,8 +141,10 @@ class _PageInitState extends State<PageInit> {
                       } else {
                         alertFailField(context);
                       }
-                    })
-              ]),
+                    },
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 100),
           ],

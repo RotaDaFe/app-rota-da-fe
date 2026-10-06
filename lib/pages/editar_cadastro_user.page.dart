@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:rota_da_fe/components/outlinedbuttoncustom.dart';
 import 'package:rota_da_fe/layout.dart';
 import 'package:rota_da_fe/config/database_helper.dart';
+import 'package:rota_da_fe/config/api_config.dart';
 import 'package:rota_da_fe/services/user_service.dart';
 import 'package:rota_da_fe/style/textstyles.dart';
 
@@ -23,8 +24,11 @@ class _PageEditeUserState extends State<PageEditeUser> {
   TextEditingController controllerEmail = TextEditingController();
   TextEditingController controllerBloco = TextEditingController();
   TextEditingController controllerSenha = TextEditingController();
-  TextEditingController controllerServidor = TextEditingController(text: 'https://api-rtf.nextlab.cloud/');
-  TextEditingController dropdownControllerLocalDeAtendimento = TextEditingController();
+  TextEditingController controllerServidor = TextEditingController(
+    text: ApiConfig.productionBaseUrl,
+  );
+  TextEditingController dropdownControllerLocalDeAtendimento =
+      TextEditingController();
   TextEditingController dropdownControllerCidade = TextEditingController();
   TextEditingController dropdownControllerSexo = TextEditingController();
   String? selectedCity;
@@ -45,7 +49,9 @@ class _PageEditeUserState extends State<PageEditeUser> {
         controllerEmail.text = user['nome'] ?? '';
         controllerBloco.text = user['posto'] ?? '';
         controllerSenha.text = user['senha'] ?? '';
-        controllerServidor.text = user['servidor'] ?? 'https://api-rtf.nextlab.cloud/';
+        controllerServidor.text = ApiConfig.normalizeBaseUrl(
+          user['servidor']?.toString(),
+        );
       });
     }
   }
@@ -59,56 +65,64 @@ class _PageEditeUserState extends State<PageEditeUser> {
           children: [
             const SizedBox(height: 30),
             const Center(
-                child: Text("Editar Usuario",
-                    style: AppTextStyles.head1)),
+              child: Text("Editar Usuario", style: AppTextStyles.head1),
+            ),
             const SizedBox(height: 15),
-      TextFieldCustom(
-        enabled: false,
-        keyboardType: TextInputType.emailAddress,
-        labelText: "Email",
-        controller: controllerEmail,
-        width: largura),
-      TextFieldCustom(
-        keyboardType: TextInputType.text,
-        labelText: "Bloco",
-        controller: controllerBloco,
-        width: largura),
-      TextFieldCustom(
-        keyboardType: TextInputType.text,
-        obscureText: true,
-        labelText: "Senha",
-        controller: controllerSenha,
-        width: largura),
-      TextFieldCustom(
-        keyboardType: TextInputType.url,
-        labelText: "Servidor (URL base)",
-        controller: controllerServidor,
-        width: largura),
+            TextFieldCustom(
+              enabled: false,
+              keyboardType: TextInputType.emailAddress,
+              labelText: "Email",
+              controller: controllerEmail,
+              width: largura,
+            ),
+            TextFieldCustom(
+              keyboardType: TextInputType.text,
+              labelText: "Bloco",
+              controller: controllerBloco,
+              width: largura,
+            ),
+            TextFieldCustom(
+              keyboardType: TextInputType.text,
+              obscureText: true,
+              labelText: "Senha",
+              controller: controllerSenha,
+              width: largura,
+            ),
+            TextFieldCustom(
+              keyboardType: TextInputType.url,
+              labelText: "Servidor (URL base)",
+              controller: controllerServidor,
+              width: largura,
+            ),
             const SizedBox(height: 20),
             OutlinedButtonCustom(
-                text: "Editar cadastro",
-                ontap: () async {
-                  if (controllerEmail.text.isNotEmpty &&
-                      controllerBloco.text.isNotEmpty &&
-                      controllerSenha.text.isNotEmpty) {
-                    if (userKey != null) {
-                      alertSucessUpdate(context);
-                      await updateUser(
-                        repository: UserRepository(dbHelper),
-                        id: userKey!,
-                        nome: controllerEmail.text,
-                        posto: controllerBloco.text,
-                        senha: controllerSenha.text,
-                        servidor: controllerServidor.text,
-                      );
-                      Navigator.of(context).pop();
-                    } else {
-                      alertFailField(context, msg: 'Usuário não encontrado para editar.');
-                    }
+              text: "Editar cadastro",
+              ontap: () async {
+                if (controllerEmail.text.isNotEmpty &&
+                    controllerBloco.text.isNotEmpty &&
+                    controllerSenha.text.isNotEmpty) {
+                  if (userKey != null) {
+                    alertSucessUpdate(context);
+                    await updateUser(
+                      repository: UserRepository(dbHelper),
+                      id: userKey!,
+                      nome: controllerEmail.text,
+                      posto: controllerBloco.text,
+                      senha: controllerSenha.text,
+                      servidor: controllerServidor.text,
+                    );
+                    Navigator.of(context).pop();
                   } else {
-                    alertFailField(context);
+                    alertFailField(
+                      context,
+                      msg: 'Usuário não encontrado para editar.',
+                    );
                   }
-                }),
+                } else {
+                  alertFailField(context);
+                }
+              },
+            ),
             const SizedBox(height: 100),
           ],
         ),

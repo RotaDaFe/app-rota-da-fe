@@ -40,40 +40,33 @@ class _PageConfiguracaoState extends State<PageConfiguracao> {
   }
 
   // Função para exportar os dados e tratar erro/sucesso
-  Future<Map<String, dynamic>> exportDatabase(
-      {required HiveHelper dbHelper}) async {
+  Future<Map<String, dynamic>> exportDatabase({
+    required HiveHelper dbHelper,
+  }) async {
     final repo = RomeiroRepository(dbHelper);
     final romeiros = await getAllRomeiros(repository: repo);
-    print('[EXPORT][DEBUG] Estado dos romeiros antes de exportar:');
-    for (final r in romeiros) {
-      print(
-          '[EXPORT][DEBUG] uuid: ${r.uuid}, nome: ${r.nome}, atualizado: ${r.atualizado}');
-    }
     if (romeiros.isEmpty) {
       return {'status': 404, 'sincronizados': 0}; // Nenhum romeiro cadastrado
     }
     // Busca a senha do Hive (box logins)
     final loginsBox = Hive.box('logins');
-    print('[EXPORT] Chaves em loginsBox: \\${loginsBox.keys}');
-    for (var k in loginsBox.keys) {
-      print('[EXPORT] loginsBox[${k.toString()}] = \\${loginsBox.get(k)}');
-    }
     final loginMap = loginsBox.isNotEmpty ? loginsBox.getAt(0) : null;
     final apiPassword =
         loginMap != null && loginMap is Map && loginMap.containsKey('senha')
-            ? loginMap['senha']
-            : '';
+        ? loginMap['senha']?.toString() ?? ''
+        : '';
     final operadorNome =
         loginMap != null && loginMap is Map && loginMap.containsKey('nome')
-            ? loginMap['nome']
-            : '';
+        ? loginMap['nome']?.toString() ?? ''
+        : '';
     final operadorEmail =
         loginMap != null && loginMap is Map && loginMap.containsKey('nome')
-            ? loginMap['nome']
-            : '';
-    print('[EXPORT] Senha lida do Hive: "$apiPassword"');
-    print('[EXPORT] Operador nome: "$operadorNome"');
-    print('[EXPORT] Operador email: "$operadorEmail"');
+        ? loginMap['nome']?.toString() ?? ''
+        : '';
+    final servidor =
+        loginMap != null && loginMap is Map && loginMap.containsKey('servidor')
+        ? loginMap['servidor']?.toString()
+        : null;
     if (apiPassword.isEmpty) {
       print('[EXPORT] Senha não encontrada no Hive!');
       return {'status': 403, 'sincronizados': 0}; // Sem senha
@@ -85,17 +78,18 @@ class _PageConfiguracaoState extends State<PageConfiguracao> {
       operadorEmail: operadorEmail,
       apiPassword: apiPassword,
       repository: repo,
+      servidor: servidor,
     );
-    print('[EXPORT] Resultado da exportação: ${result['sucesso']}');
     return {
-      'status': result['sucesso'] ? 201 : 500,
-      'sincronizados': result['sincronizados'] ?? 0
+      'status': result['statusCode'] ?? 500,
+      'sincronizados': result['sincronizados'] ?? 0,
     };
   }
 
   Future<String> exportDatabaseCopy({required HiveHelper dbHelper}) async {
     List<Map<String, dynamic>> romeiros = List<Map<String, dynamic>>.from(
-        await getAllRomeiros(repository: RomeiroRepository(dbHelper)));
+      await getAllRomeiros(repository: RomeiroRepository(dbHelper)),
+    );
     if (romeiros.isEmpty) {
       return "";
     }
@@ -117,8 +111,9 @@ class _PageConfiguracaoState extends State<PageConfiguracao> {
       final repo = RomeiroRepository(dbHelper);
       final romeirosAntes = await getAllRomeiros(repository: repo);
       final totalCadastrados = romeirosAntes.length;
-      final totalAtualizadosAntes =
-          romeirosAntes.where((r) => r.atualizado == true).length;
+      final totalAtualizadosAntes = romeirosAntes
+          .where((r) => r.atualizado == true)
+          .length;
 
       // Chamar a função real de exportação e verificar o status
       final exportResult = await exportDatabase(dbHelper: dbHelper);
@@ -130,8 +125,9 @@ class _PageConfiguracaoState extends State<PageConfiguracao> {
 
       // Após exportar, atualizar lista
       final romeirosDepois = await getAllRomeiros(repository: repo);
-      final totalSincronizados =
-          romeirosDepois.where((r) => r.atualizado == false).length;
+      final totalSincronizados = romeirosDepois
+          .where((r) => r.atualizado == false)
+          .length;
       if (statusCode == 404) {
         QuickAlert.show(
           context: context,
@@ -139,7 +135,7 @@ class _PageConfiguracaoState extends State<PageConfiguracao> {
           title: 'Nenhum romeiro cadastrado',
           text: 'Não há romeiros cadastrados neste dispositivo.',
         );
-      } else if (statusCode == 403) {
+      } else if (statusCode == 401 || statusCode == 403) {
         QuickAlert.show(
           context: context,
           type: QuickAlertType.error,
@@ -152,10 +148,9 @@ class _PageConfiguracaoState extends State<PageConfiguracao> {
           context: context,
           type: QuickAlertType.error,
           title: 'Erro nos dados',
-          text:
-              'Os dados parecem estar vazios ou corrompidos. Verifique e tente exportar novamente.',
+          text: 'Os dados parecem estar vazios ou corrompidos. Verifique e tente exportar novamente.',
         );
-      } else if (statusCode == 201) {
+      } else if (statusCode == 200 || statusCode == 201) {
         QuickAlert.show(
           context: context,
           type: QuickAlertType.success,
@@ -172,13 +167,12 @@ class _PageConfiguracaoState extends State<PageConfiguracao> {
             ),
           ),
         );
-      } else if (statusCode == 500) {
+      } else if (statusCode >= 500) {
         QuickAlert.show(
           context: context,
           type: QuickAlertType.error,
-          title: 'Erro no servidor',
-          text:
-              'Ocorreu um erro interno no servidor. Tente novamente mais tarde.',
+          title: 'Servidor indisponível',
+          text: 'Não foi possível conectar ao servidor. Confira sua internet e tente novamente.',
         );
       } else {
         // Exibir popup de erro para outros status de erro desconhecidos
@@ -209,9 +203,11 @@ class _PageConfiguracaoState extends State<PageConfiguracao> {
     try {
       final repo = RomeiroRepository(dbHelper);
       final csvPath = await repo.exportToCsvFile();
-      await Share.shareXFiles([XFile(csvPath, mimeType: 'text/csv')],
-          subject: 'Exportação de Romeiros',
-          text: 'Segue o arquivo CSV exportado dos romeiros.');
+      await Share.shareXFiles(
+        [XFile(csvPath, mimeType: 'text/csv')],
+        subject: 'Exportação de Romeiros',
+        text: 'Segue o arquivo CSV exportado dos romeiros.',
+      );
       QuickAlert.show(
         context: context,
         type: QuickAlertType.success,
@@ -224,8 +220,8 @@ class _PageConfiguracaoState extends State<PageConfiguracao> {
       print(stack);
       final msg =
           error.toString().contains('Nenhum romeiro encontrado para exportar.')
-              ? 'Nenhum romeiro cadastrado para exportar.'
-              : 'Ocorreu um erro ao gerar o CSV. Tente novamente.\n$error';
+          ? 'Nenhum romeiro cadastrado para exportar.'
+          : 'Ocorreu um erro ao gerar o CSV. Tente novamente.\n$error';
       QuickAlert.show(
         context: context,
         type: QuickAlertType.error,
@@ -246,10 +242,7 @@ class _PageConfiguracaoState extends State<PageConfiguracao> {
           children: [
             const SizedBox(height: 30),
             const Center(
-              child: Text(
-                "Configuração",
-                style: AppTextStyles.head1,
-              ),
+              child: Text("Configuração", style: AppTextStyles.head1),
             ),
             const SizedBox(height: 15),
             Align(

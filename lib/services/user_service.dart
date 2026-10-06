@@ -1,3 +1,4 @@
+import 'package:rota_da_fe/config/api_config.dart';
 import 'package:rota_da_fe/repository/user_repository.dart';
 import 'package:rota_da_fe/models/user.model.dart';
 
@@ -13,7 +14,7 @@ Future<int> addUser({
     nome: nome,
     posto: posto,
     senha: senha,
-    servidor: servidor,
+    servidor: ApiConfig.normalizeBaseUrl(servidor),
   );
   int res = await repository.addUser(user);
   return res;
@@ -26,13 +27,13 @@ Future<void> updateUser({
   required nome,
   required posto,
   required senha,
-  String servidor = 'https://api-rtf.nextlab.cloud/',
+  String servidor = ApiConfig.productionBaseUrl,
 }) async {
   UserModel user = UserModel(
     nome: nome,
     posto: posto,
     senha: senha,
-    servidor: servidor,
+    servidor: ApiConfig.normalizeBaseUrl(servidor),
   );
   await repository.updateUser(id, user);
 }

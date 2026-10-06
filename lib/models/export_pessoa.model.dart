@@ -1,10 +1,7 @@
 import 'romeiro.model.dart';
 
 class ExportPessoaModel {
-  ExportPessoaModel copyWith({
-    String? operador_nome,
-    String? operador_email,
-  }) {
+  ExportPessoaModel copyWith({String? operador_nome, String? operador_email}) {
     return ExportPessoaModel(
       uuid: this.uuid,
       nome: this.nome,
@@ -18,6 +15,7 @@ class ExportPessoaModel {
       datatime: this.datatime,
     );
   }
+
   // Construtor auxiliar para converter RomeiroModel em ExportPessoaModel
   factory ExportPessoaModel.fromRomeiroModel(RomeiroModel r) {
     return ExportPessoaModel(
@@ -64,19 +62,21 @@ class ExportPessoaModel {
       idade: map['idade'] ?? 0,
       cidade: map['cidade'] ?? '',
       sexo: map['sexo'] ?? '',
-      localatendimento: map['localatendimento'] ?? map['localDeAtendimento'] ?? '',
+      localatendimento:
+          map['localatendimento'] ?? map['localDeAtendimento'] ?? '',
       condicaofisica: map['condicaofisica'] ?? map['patologia'] ?? '',
       operador_nome: map['operador_nome'] ?? '',
       operador_email: map['operador_email'] ?? '',
-      datatime: map['datatime'] ?? map['createdAt'] ?? DateTime.now().toUtc().toIso8601String(),
+      datatime:
+          map['datatime'] ??
+          map['createdAt'] ??
+          DateTime.now().toUtc().toIso8601String(),
     );
   }
 
   String _formatDate(String dateStr) {
     try {
-      DateTime dt = DateTime.parse(dateStr);
-      // Retorna no formato yyyy-MM-dd HH:mm:ss
-      return '${dt.year.toString().padLeft(4, '0')}-${dt.month.toString().padLeft(2, '0')}-${dt.day.toString().padLeft(2, '0')} ${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}:${dt.second.toString().padLeft(2, '0')}';
+      return DateTime.parse(dateStr).toUtc().toIso8601String();
     } catch (e) {
       return dateStr;
     }
@@ -85,18 +85,25 @@ class ExportPessoaModel {
   Map<String, dynamic> toJson() {
     // Normalizar sexo
     String sexoNormalizado = sexo.toLowerCase();
-    if (sexoNormalizado == 'feminino') sexoNormalizado = 'feminino';
-    else if (sexoNormalizado == 'masculino') sexoNormalizado = 'masculino';
-    else if (sexoNormalizado == 'outros' || sexoNormalizado == 'outro') sexoNormalizado = 'outros';
-    else sexoNormalizado = 'outros';
+    if (sexoNormalizado == 'feminino')
+      sexoNormalizado = 'feminino';
+    else if (sexoNormalizado == 'masculino')
+      sexoNormalizado = 'masculino';
+    else if (sexoNormalizado == 'outros' || sexoNormalizado == 'outro')
+      sexoNormalizado = 'outros';
+    else
+      sexoNormalizado = 'outros';
 
     // Garantir operador_email válido
-    String emailValido = operador_email.contains('@') && operador_email.contains('.')
-      ? operador_email
-      : 'no-reply@rotadafe.com';
+    String emailValido =
+        operador_email.contains('@') && operador_email.contains('.')
+        ? operador_email
+        : 'no-reply@rotadafe.com';
 
     // Formatar datatime
-    String datatimeFormatado = datatime.isNotEmpty ? _formatDate(datatime) : _formatDate(DateTime.now().toUtc().toIso8601String());
+    String datatimeFormatado = datatime.isNotEmpty
+        ? _formatDate(datatime)
+        : _formatDate(DateTime.now().toUtc().toIso8601String());
 
     return {
       'uuid': uuid.isNotEmpty ? uuid : '',

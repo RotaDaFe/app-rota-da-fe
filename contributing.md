@@ -3,7 +3,7 @@
   <img src="/images/logo.png" width="170" alt="Rota da Fé">
 </p>
 
-<h1 align="center">Rota da Fé - Projeto Círio 2025</h1>
+<h1 align="center">Rota da Fé - Projeto Círio 2026</h1>
 
 <p align="center">
   <b>Modernize o cadastro de participantes do Círio com tecnologia, acessibilidade e fé.</b><br>
@@ -70,4 +70,4 @@ Seu PR será revisado por um dos mantenedores. Fique atento a possíveis coment�
 - Prefira pequenas contribuições frequentes a grandes mudanças de uma vez.
 - Seja respeitoso e colaborativo nos comentários e revisões.
 
-**Divirta-se colaborando e ajudando a tornar o Cirio 2024 ainda mais especial!**
+**Divirta-se colaborando e ajudando a tornar o Círio 2026 ainda mais especial!**
